@@ -63,10 +63,14 @@ public class AutoFillAspect {
         if (value == OperationType.INSERT){
             //需要为四个属性赋值
             try {
-                Method create_time = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_CREATE_TIME, LocalDateTime.class);
-                Method create_user = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_CREATE_USER, Long.class);
-                Method update_time = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_TIME, LocalDateTime.class);
-                Method update_user = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_USER, Long.class);
+                Method create_time = entity.getClass()
+                        .getDeclaredMethod(AutoFillConstant.SET_CREATE_TIME, LocalDateTime.class);
+                Method create_user = entity.getClass()
+                        .getDeclaredMethod(AutoFillConstant.SET_CREATE_USER, Long.class);
+                Method update_time = entity.getClass()
+                        .getDeclaredMethod(AutoFillConstant.SET_UPDATE_TIME, LocalDateTime.class);
+                Method update_user = entity.getClass()
+                        .getDeclaredMethod(AutoFillConstant.SET_UPDATE_USER, Long.class);
 
                 create_time.invoke(entity,localDateTime);
                 create_user.invoke(entity,currentId);

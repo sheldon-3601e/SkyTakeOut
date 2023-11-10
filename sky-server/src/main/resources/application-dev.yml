@@ -6,3 +6,9 @@ sky:
     database: sky_take_out
     username: root
     password: 123
+
+  alioss:
+    endpoint: oss-cn-huhehaote.aliyuncs.com
+    access-key-id: LTAI5tKzh7t7secknzvAYbmM
+    access-key-secret: udqJLqSB7wy9MCjT6AKoAp2erTCDtQ
+    bucketName: sheldon-sky-take-out

@@ -31,9 +31,12 @@ logging:
 
 sky:
   jwt:
-
     admin-secret-key: itcast
-
     admin-ttl: 7200000
-
     admin-token-name: token
+
+  alioss:
+    endpoint: ${sky.alioss.endpoint}
+    access-key-id: ${sky.alioss.access-key-id}
+    access-key-secret: ${sky.alioss.access-key-secret}
+    bucket-name: ${sky.alioss.bucket-name}

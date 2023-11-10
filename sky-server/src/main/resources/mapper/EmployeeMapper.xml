@@ -16,7 +16,7 @@
         </set>
         where id = #{id}
     </update>
-    <select id="pageQuery" resultType="com.sky.entity.Employee">
+    <select id="pageQuery" resultType="Employee">
         select * from employee
         <where>
             <if test="name != null and name != ''">
