@@ -5,10 +5,33 @@
 
 
     <insert id="insertDish" useGeneratedKeys="true" keyProperty="id">
-        insert into dish (name, category_id, price, description, create_time,update_time, create_user, update_user, status)
+        insert into dish
+            (name, category_id, price, description, image, create_time,update_time, create_user, update_user, status)
         values
-            (#{name}, #{categoryId}, #{price}, #{description}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser}, #{status})
+            (#{name}, #{categoryId}, #{price}, #{description}, #{image}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser}, #{status})
     </insert>
+    <update id="update">
+        update dish
+        <set>
+            <if test="name != null">`name` = #{name},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+        </set>
+        where id = #{id}
+
+    </update>
+
+    <delete id="deleteBatchById">
+        delete from dish where id in
+        <foreach collection="dishIds" item="dishId" separator="," open="(" close=")">
+            #{dishId}
+        </foreach>
+    </delete>
 
     <select id="pageQuery" resultType="com.sky.vo.DishVO">
         SELECT d.*,c.`name` AS categoryName FROM dish d LEFT OUTER JOIN category c ON d.category_id = c.id
@@ -24,6 +47,11 @@
             </if>
         </where>
         ORDER BY d.create_time desc
+    </select>
+    <select id="getDishById" resultType="com.sky.vo.DishVO">
+        SELECT d.*,c.`name` AS categoryName
+        FROM dish d,category c
+        WHERE d.id = #{id} AND d.category_id = c.id
     </select>
 
 </mapper>

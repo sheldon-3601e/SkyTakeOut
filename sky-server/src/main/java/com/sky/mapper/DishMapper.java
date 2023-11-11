@@ -8,6 +8,8 @@ import com.sky.enumeration.OperationType;
 import com.sky.vo.DishVO;
 import org.apache.ibatis.annotations.*;
 
+import java.util.ArrayList;
+
 @Mapper
 public interface DishMapper {
 
@@ -48,4 +50,24 @@ public interface DishMapper {
      */
     @Delete("delete from dish where id = #{dishId}")
     void deleteById(Long dishId);
+
+    /**
+     * 根据主键批量删除
+     * @param dishIds
+     */
+    void deleteBatchById(ArrayList<Long> dishIds);
+
+    /**
+     * 根据主键获取菜品详细信息
+     * @param id
+     * @return
+     */
+    DishVO getDishById(Long id);
+
+    /**
+     * 根据ID动态更改菜品信息
+     * @param dish
+     */
+    @AutoFill(OperationType.UPDATE)
+    void update(Dish dish);
 }
