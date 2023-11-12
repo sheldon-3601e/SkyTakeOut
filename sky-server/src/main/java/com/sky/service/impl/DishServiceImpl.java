@@ -31,7 +31,7 @@ import java.util.List;
  * @Author 26483
  * @Date 2023/11/10 18:55
  * @Version 1.0
- * @Description TODO
+ * @Description 菜品服务
  */
 @Service
 public class DishServiceImpl implements DishService {
