@@ -53,5 +53,15 @@
         FROM dish d,category c
         WHERE d.id = #{id} AND d.category_id = c.id
     </select>
+    <select id="list" resultType="com.sky.entity.Dish">
+        select * from dish
+        <where>
+            <if test="name != null">and name = #{name}</if>
+            <if test="categoryId != null">and category_id = #{categoryId}</if>
+            <if test="description != null">and description = #{description}</if>
+            <if test="description != null">and description = #{description}</if>
+            <if test="status != null">and status = #{status}</if>
+        </where>
+    </select>
 
 </mapper>

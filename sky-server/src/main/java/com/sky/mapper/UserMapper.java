@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Select;
  * @Author 26483
  * @Date 2023/11/12 18:53
  * @Version 1.0
- * @Description TODO
+ * @Description UserMapper
  */
 @Mapper
 public interface UserMapper {

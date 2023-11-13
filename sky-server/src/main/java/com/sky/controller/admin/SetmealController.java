@@ -82,7 +82,6 @@ public class SetmealController {
     public Result<PageResult> page(SetmealPageQueryDTO setmealPageQueryDTO) {
         log.info("分页查询:{}", setmealPageQueryDTO);
 
-        // TODO 分类被禁用后，前台不展示
         PageResult pageResult = setmealService.page(setmealPageQueryDTO);
         return Result.success(pageResult);
     }

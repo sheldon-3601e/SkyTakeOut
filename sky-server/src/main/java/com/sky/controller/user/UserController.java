@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @ClassName UserController
@@ -40,16 +41,15 @@ public class UserController {
     @PostMapping("/login")
     @ApiOperation("用户登录")
     public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO){
-        log.info("用户登录:{}",userLoginDTO);
+        log.info("用户登录:{}",userLoginDTO.getCode());
 
         //微信登录
         User user = userService.wxLogin(userLoginDTO);
 
         //生成jwt令牌
-        HashMap<String, Object> claims = new HashMap<>();
-        claims.put(JwtClaimsConstant.USER_ID,user.getId());
-        String token =
-                JwtUtil.createJWT(jwtProperties.getUserSecretKey(), jwtProperties.getUserTtl(), claims);
+        Map<String, Object> claim = new HashMap<>();
+        claim.put(JwtClaimsConstant.USER_ID, user.getId());
+        String token = JwtUtil.createJWT(jwtProperties.getUserSecretKey(), jwtProperties.getUserTtl(), claim);
 
         UserLoginVO userLoginVO = UserLoginVO.builder()
                 .id(user.getId())
