@@ -3,4 +3,10 @@
 <mapper namespace="com.sky.mapper.SetmealDishMapper">
 
 
+    <delete id="deleteBatchBySetmealIds">
+        delete from setmeal_dish where setmeal_id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

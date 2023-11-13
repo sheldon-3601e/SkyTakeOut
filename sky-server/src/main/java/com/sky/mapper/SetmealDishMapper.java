@@ -1,8 +1,11 @@
 package com.sky.mapper;
 
 import com.sky.entity.SetmealDish;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * @ClassName SetmealDishMapper
@@ -22,6 +25,36 @@ public interface SetmealDishMapper {
     @Select("select * from SetmealDish where dish_id = #{dishId}")
     SetmealDish selectByDishId(Long dishId);
 
+    /**
+     * 根据DishId查询数量
+     * @param dishId
+     * @return
+     */
     @Select(("select count(*) from setmeal_dish where dish_id = #{dishId}"))
     Integer countByDishId(Long dishId);
+
+    /**
+     * 添加套餐菜品对应关系
+     * @param setmealDish
+     */
+    @Insert("insert into setmeal_dish" +
+            "(setmeal_id, dish_id, name, price, copies) " +
+            "values" +
+            "(#{setmealId}, #{dishId}, #{name}, #{price}, #{copies})")
+    void save(SetmealDish setmealDish);
+
+    /**
+     * 根据套餐ID批量删除
+     * @param ids
+     */
+    void deleteBatchBySetmealIds(List<Long> ids);
+
+    /**
+     * 根据套餐ID获取关系
+     *
+     * @param id
+     * @return
+     */
+    @Select("select * from setmeal_dish where setmeal_id = #{id}")
+    List<SetmealDish> getBySetmealId(Long id);
 }
