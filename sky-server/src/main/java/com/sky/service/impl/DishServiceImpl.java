@@ -177,4 +177,12 @@ public class DishServiceImpl implements DishService {
 
         return dishVOList;
     }
+
+    @Override
+    public void updateStatus(Long id, int status) {
+        Dish dish = new Dish();
+        dish.setId(id);
+        dish.setStatus(status);
+        dishMapper.update(dish);
+    }
 }
