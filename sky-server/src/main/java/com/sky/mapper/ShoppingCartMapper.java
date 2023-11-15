@@ -31,7 +31,7 @@ public interface ShoppingCartMapper {
      * 根据ID修改数量
      * @param shoppingCart
      */
-    @Update("update shopping_cart set number = #{number} where user_id = #{userId}")
+
     void updateNumberById(ShoppingCart shoppingCart);
 
     /**
@@ -46,4 +46,7 @@ public interface ShoppingCartMapper {
 
     @Delete("delete from shopping_cart where user_id = #{userId}")
     void clean(ShoppingCart shoppingCart);
+
+
+    void sub(ShoppingCart shoppingCart);
 }
