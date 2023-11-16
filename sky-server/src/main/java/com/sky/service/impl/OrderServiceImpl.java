@@ -118,7 +118,7 @@ public class OrderServiceImpl implements OrderService {
         User user = userMapper.getById(userId);
 
         //调用微信支付接口，生成预支付交易单
-        JSONObject jsonObject = weChatPayUtil.pay(
+        /*JSONObject jsonObject = weChatPayUtil.pay(
                 ordersPaymentDTO.getOrderNumber(), //商户订单号
                 new BigDecimal(0.01), //支付金额，单位 元
                 "苍穹外卖订单", //商品描述
@@ -130,9 +130,14 @@ public class OrderServiceImpl implements OrderService {
         }
 
         OrderPaymentVO vo = jsonObject.toJavaObject(OrderPaymentVO.class);
-        vo.setPackageStr(jsonObject.getString("package"));
+        vo.setPackageStr(jsonObject.getString("package"));*/
 
-        return vo;
+        // 模拟生成预支付订单
+        return OrderPaymentVO.builder()
+                .paySign("test paySign")
+                .timeStamp(LocalDateTime.now().toString())
+                .packageStr("123456")
+                .build();
     }
 
     /**

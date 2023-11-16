@@ -151,7 +151,11 @@ public class WeChatPayUtil {
         jsonObject.put("payer", payer);
 
         String body = jsonObject.toJSONString();
-        return post(JSAPI, body);
+        /**
+         * 调用微信下单接口，返回预支付信息
+         */
+//        return post(JSAPI, body);
+        return "test";
     }
 
     /**
