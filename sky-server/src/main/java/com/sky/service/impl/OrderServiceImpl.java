@@ -1,8 +1,11 @@
 package com.sky.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
+import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
 import com.sky.entity.*;
@@ -10,10 +13,12 @@ import com.sky.exception.AddressBookBusinessException;
 import com.sky.exception.OrderBusinessException;
 import com.sky.exception.ShoppingCartBusinessException;
 import com.sky.mapper.*;
+import com.sky.result.PageResult;
 import com.sky.service.OrderService;
 import com.sky.utils.WeChatPayUtil;
 import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
+import com.sky.vo.OrderVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
@@ -45,6 +50,8 @@ public class OrderServiceImpl implements OrderService {
     private ShoppingCartMapper shoppingCartMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private DishMapper dishMapper;
     @Autowired
     private WeChatPayUtil weChatPayUtil;
 
@@ -132,6 +139,20 @@ public class OrderServiceImpl implements OrderService {
         OrderPaymentVO vo = jsonObject.toJavaObject(OrderPaymentVO.class);
         vo.setPackageStr(jsonObject.getString("package"));*/
 
+        // 根据订单号查询订单
+        String outTradeNo = ordersPaymentDTO.getOrderNumber();
+        Orders ordersDB = orderMapper.getByNumber(outTradeNo);
+
+        // 根据订单id更新订单的状态、支付方式、支付状态、结账时间
+        Orders orders = Orders.builder()
+                .id(ordersDB.getId())
+                .status(Orders.TO_BE_CONFIRMED)
+                .payStatus(Orders.PAID)
+                .checkoutTime(LocalDateTime.now())
+                .build();
+
+        orderMapper.update(orders);
+
         // 模拟生成预支付订单
         return OrderPaymentVO.builder()
                 .paySign("test paySign")
@@ -159,5 +180,33 @@ public class OrderServiceImpl implements OrderService {
                 .build();
 
         orderMapper.update(orders);
+    }
+
+    @Override
+    public PageResult pageQuery(OrdersPageQueryDTO ordersPageQueryDTO) {
+
+        // 根据userId查询订单
+        PageHelper.startPage(ordersPageQueryDTO.getPage(), ordersPageQueryDTO.getPageSize());
+        Long userId = BaseContext.getCurrentId();
+        ordersPageQueryDTO.setUserId(userId);
+
+        Page<Orders> page = orderMapper.pageQuery(ordersPageQueryDTO);
+
+        ArrayList<OrderVO> list = new ArrayList<>();
+
+
+        for (Orders order : page) {
+            // 查询订单详情
+            Long orderId = order.getId();
+            List<OrderDetail> orderDetailList = orderDetailMapper.getByOrderId(orderId);
+
+            // 封装对象
+            OrderVO orderVO = new OrderVO();
+            BeanUtils.copyProperties(order, orderVO);
+            orderVO.setOrderDetailList(orderDetailList);
+            list.add(orderVO);
+        }
+
+        return new PageResult(page.getTotal(), list);
     }
 }
