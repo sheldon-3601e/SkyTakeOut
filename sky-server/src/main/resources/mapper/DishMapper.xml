@@ -5,13 +5,13 @@
 
 
     <insert id="insertDish" useGeneratedKeys="true" keyProperty="id">
-        insert into dish
+        insert into sky_take_out.dish
             (name, category_id, price, description, image, create_time,update_time, create_user, update_user, status)
         values
             (#{name}, #{categoryId}, #{price}, #{description}, #{image}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser}, #{status})
     </insert>
     <update id="update">
-        update dish
+        update sky_take_out.dish
         <set>
             <if test="name != null">`name` = #{name},</if>
             <if test="categoryId != null">category_id = #{categoryId},</if>
@@ -27,14 +27,16 @@
     </update>
 
     <delete id="deleteBatchById">
-        delete from dish where id in
+        delete from sky_take_out.dish where id in
         <foreach collection="dishIds" item="dishId" separator="," open="(" close=")">
             #{dishId}
         </foreach>
     </delete>
 
     <select id="pageQuery" resultType="com.sky.vo.DishVO">
-        SELECT d.*,c.`name` AS categoryName FROM dish d LEFT OUTER JOIN category c ON d.category_id = c.id
+        SELECT d.*,c.`name` AS categoryName
+        FROM sky_take_out.dish d LEFT OUTER JOIN sky_take_out.category c
+            ON d.category_id = c.id
         <where>
             <if test="name != null">
                 and d.name lisk concat ('%','#{name}','%')
@@ -50,11 +52,11 @@
     </select>
     <select id="getDishById" resultType="com.sky.vo.DishVO">
         SELECT d.*,c.`name` AS categoryName
-        FROM dish d,category c
+        FROM sky_take_out.dish d, sky_take_out.category c
         WHERE d.id = #{id} AND d.category_id = c.id
     </select>
     <select id="list" resultType="com.sky.entity.Dish">
-        select * from dish
+        select * from sky_take_out.dish
         <where>
             <if test="name != null">and name = #{name}</if>
             <if test="categoryId != null">and category_id = #{categoryId}</if>

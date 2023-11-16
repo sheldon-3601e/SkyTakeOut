@@ -28,7 +28,7 @@ public interface DishFlavorMapper {
      * 根据菜品ID删除口味
      * @param dishId
      */
-    @Delete("delete from dish_flavor where dish_id = #{dishId}")
+    @Delete("delete from sky_take_out.dish_flavor where dish_id = #{dishId}")
     void deleteByDishId(Long dishId);
 
     /**
@@ -43,7 +43,7 @@ public interface DishFlavorMapper {
      * @param id
      * @return
      */
-    @Select("select * from dish_flavor where dish_id = #{dishId}")
+    @Select("select * from sky_take_out.dish_flavor where dish_id = #{dishId}")
     List<DishFlavor> getByDishId(Long dishId);
 
 }

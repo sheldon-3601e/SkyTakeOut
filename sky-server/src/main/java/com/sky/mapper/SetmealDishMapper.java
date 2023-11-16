@@ -22,7 +22,7 @@ public interface SetmealDishMapper {
      * @param dishId
      * @return
      */
-    @Select("select * from SetmealDish where dish_id = #{dishId}")
+    @Select("select * from sky_take_out.setmeal_dish where dish_id = #{dishId}")
     SetmealDish selectByDishId(Long dishId);
 
     /**
@@ -30,14 +30,14 @@ public interface SetmealDishMapper {
      * @param dishId
      * @return
      */
-    @Select(("select count(*) from setmeal_dish where dish_id = #{dishId}"))
+    @Select(("select count(*) from sky_take_out.setmeal_dish where dish_id = #{dishId}"))
     Integer countByDishId(Long dishId);
 
     /**
      * 添加套餐菜品对应关系
      * @param setmealDish
      */
-    @Insert("insert into setmeal_dish" +
+    @Insert("insert into sky_take_out.setmeal_dish" +
             "(setmeal_id, dish_id, name, price, copies) " +
             "values" +
             "(#{setmealId}, #{dishId}, #{name}, #{price}, #{copies})")
@@ -55,6 +55,6 @@ public interface SetmealDishMapper {
      * @param id
      * @return
      */
-    @Select("select * from setmeal_dish where setmeal_id = #{id}")
+    @Select("select * from sky_take_out.setmeal_dish where setmeal_id = #{id}")
     List<SetmealDish> getBySetmealId(Long id);
 }

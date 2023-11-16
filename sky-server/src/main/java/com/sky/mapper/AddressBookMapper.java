@@ -18,7 +18,7 @@ public interface AddressBookMapper {
      * 新增
      * @param addressBook
      */
-    @Insert("insert into address_book" +
+    @Insert("insert into sky_take_out.address_book" +
             "        (user_id, consignee, phone, sex, province_code, province_name, city_code, city_name, district_code," +
             "         district_name, detail, label, is_default)" +
             "        values (#{userId}, #{consignee}, #{phone}, #{sex}, #{provinceCode}, #{provinceName}, #{cityCode}, #{cityName}," +
@@ -30,7 +30,7 @@ public interface AddressBookMapper {
      * @param id
      * @return
      */
-    @Select("select * from address_book where id = #{id}")
+    @Select("select * from sky_take_out.address_book where id = #{id}")
     AddressBook getById(Long id);
 
     /**
@@ -43,14 +43,14 @@ public interface AddressBookMapper {
      * 根据 用户id修改 是否默认地址
      * @param addressBook
      */
-    @Update("update address_book set is_default = #{isDefault} where user_id = #{userId}")
+    @Update("update sky_take_out.address_book set is_default = #{isDefault} where user_id = #{userId}")
     void updateIsDefaultByUserId(AddressBook addressBook);
 
     /**
      * 根据id删除地址
      * @param id
      */
-    @Delete("delete from address_book where id = #{id}")
+    @Delete("delete from sky_take_out.address_book where id = #{id}")
     void deleteById(Long id);
 
 }

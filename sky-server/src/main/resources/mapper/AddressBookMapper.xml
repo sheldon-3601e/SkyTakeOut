@@ -3,7 +3,7 @@
 <mapper namespace="com.sky.mapper.AddressBookMapper">
 
     <select id="list" parameterType="AddressBook" resultType="AddressBook">
-        select * from address_book
+        select * from sky_take_out.address_book
         <where>
             <if test="userId != null">
                 and user_id = #{userId}
@@ -18,7 +18,7 @@
     </select>
 
     <update id="update" parameterType="addressBook">
-        update address_book
+        update sky_take_out.address_book
         <set>
             <if test="consignee != null">
                 consignee = #{consignee},

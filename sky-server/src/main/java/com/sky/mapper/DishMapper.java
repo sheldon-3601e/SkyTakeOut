@@ -19,7 +19,7 @@ public interface DishMapper {
      * @param categoryId
      * @return
      */
-    @Select("select count(id) from dish where category_id = #{categoryId}")
+    @Select("select count(id) from sky_take_out.dish where category_id = #{categoryId}")
     Integer countByCategoryId(Long categoryId);
 
     /**
@@ -41,7 +41,7 @@ public interface DishMapper {
      * @param dishId
      * @return
      */
-    @Select("select * from dish where id = #{dishId}")
+    @Select("select * from sky_take_out.dish where id = #{dishId}")
     Dish selectDishById(Long dishId);
 
 
@@ -49,7 +49,7 @@ public interface DishMapper {
      * 根据ID删除菜品
      * @param dishId
      */
-    @Delete("delete from dish where id = #{dishId}")
+    @Delete("delete from sky_take_out.dish where id = #{dishId}")
     void deleteById(Long dishId);
 
     /**
@@ -77,7 +77,7 @@ public interface DishMapper {
      * @param categoryId
      * @return
      */
-    @Select("select * from dish where category_id = #{categoryId};")
+    @Select("select * from sky_take_out.dish where category_id = #{categoryId};")
     List<Dish> getDIshByCategoryId(Long categoryId);
 
     /**

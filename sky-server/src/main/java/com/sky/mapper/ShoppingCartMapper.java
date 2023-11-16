@@ -38,13 +38,13 @@ public interface ShoppingCartMapper {
      * 插入购物车
      * @param shoppingCart
      */
-    @Insert("insert into shopping_cart" +
+    @Insert("insert into sky_take_out.shopping_cart" +
             "(name, user_id, dish_id, setmeal_id, dish_flavor, number, amount, image, create_time)" +
             "values " +
             "(#{name}, #{userId}, #{dishId}, #{setmealId}, #{dishFlavor}, #{number}, #{amount}, #{image}, #{createTime})")
     void add(ShoppingCart shoppingCart);
 
-    @Delete("delete from shopping_cart where user_id = #{userId}")
+    @Delete("delete from sky_take_out.shopping_cart where user_id = #{userId}")
     void clean(ShoppingCart shoppingCart);
 
 

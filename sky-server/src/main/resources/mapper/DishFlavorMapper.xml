@@ -4,14 +4,14 @@
 <mapper namespace="com.sky.mapper.DishFlavorMapper">
 
     <insert id="insertBatch" parameterType="DishFlavor">
-            insert into dish_flavor (dish_id, name, value) values
+            insert into sky_take_out.dish_flavor (dish_id, name, value) values
         <foreach collection="flavors" item="df" separator=",">
             (#{df.dishId}, #{df.name}, #{df.value})
         </foreach>
     </insert>
 
     <delete id="deleteBatchByDishId">
-        delete from dish_flavor where dish_id in
+        delete from sky_take_out.dish_flavor where dish_id in
         <foreach collection="dishIds" item="dishId" separator="," open="(" close=")">
             #{dishId}
         </foreach>

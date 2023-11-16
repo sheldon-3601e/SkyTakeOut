@@ -20,7 +20,7 @@ public interface SetmealMapper {
      * @param id
      * @return
      */
-    @Select("select count(id) from setmeal where category_id = #{categoryId}")
+    @Select("select count(id) from sky_take_out.setmeal where category_id = #{categoryId}")
     Integer countByCategoryId(Long id);
 
     /**
@@ -48,7 +48,7 @@ public interface SetmealMapper {
      * @param id
      * @return
      */
-    @Select("select * from setmeal where id = #{id}")
+    @Select("select * from sky_take_out.setmeal where id = #{id}")
     Setmeal getSetmealById(Long id);
 
     /**
@@ -71,7 +71,7 @@ public interface SetmealMapper {
      * @return
      */
     @Select("select sd.name, sd.copies, d.image, d.description " +
-            "from setmeal_dish sd left join dish d on sd.dish_id = d.id " +
+            "from sky_take_out.setmeal_dish sd left join sky_take_out.dish d on sd.dish_id = d.id " +
             "where sd.setmeal_id = #{setmealId}")
     List<DishItemVO> getDishItemBySetmealId(Long setmealId);
 }
