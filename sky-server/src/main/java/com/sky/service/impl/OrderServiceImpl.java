@@ -227,4 +227,12 @@ public class OrderServiceImpl implements OrderService {
         return orderVO;
 
     }
+
+    @Override
+    public void cancel(Long id) {
+
+        Integer status = Orders.CANCELLED;
+        orderMapper.cancel(id, status);
+
+    }
 }

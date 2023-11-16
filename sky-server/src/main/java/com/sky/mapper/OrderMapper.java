@@ -5,6 +5,7 @@ import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.entity.Orders;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * @ClassName OrderMapper
@@ -50,4 +51,13 @@ public interface OrderMapper {
      */
     @Select("select * from sky_take_out.orders where id = #{id}")
     Orders getById(Long id);
+
+    /**
+     * 取消订单
+     *
+     * @param id
+     * @param status
+     */
+    @Update("update sky_take_out.orders set status = #{status} where id = #{id};")
+    void cancel(Long id, Integer status);
 }
