@@ -230,9 +230,36 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void cancel(Long id) {
+        // 获取订单信息
+        Orders orderSD = orderMapper.getById(id);
+        // 校验订单是否存在
+        if (orderSD == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+        // 查看订单状态
+        Orders order = new Orders();
+        order.setId(orderSD.getId());
+        Integer status = orderSD.getStatus();
+        if (status > Orders.REFUND) {
+            // 如果商家已结单，则不能取消订单
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
 
-        Integer status = Orders.CANCELLED;
-        orderMapper.cancel(id, status);
-
+        if (status.equals(Orders.TO_BE_CONFIRMED)) {
+            // 如果付款，则进行退款操作
+            //调用微信支付退款接口
+            /*weChatPayUtil.refund(
+                    ordersDB.getNumber(), //商户订单号
+                    ordersDB.getNumber(), //商户退款单号
+                    new BigDecimal(0.01),//退款金额，单位 元
+                    new BigDecimal(0.01));//原订单金额*/
+            orderMapper.setPayStatus(id, Orders.REFUND);
+        }
+        // 如果未付款，则直接取消订单
+        // 更新订单状态、取消原因、取消时间
+        order.setStatus(Orders.CANCELLED);
+        order.setCancelReason("用户取消");
+        order.setCancelTime(LocalDateTime.now());
+        orderMapper.update(order);
     }
 }

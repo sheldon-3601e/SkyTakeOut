@@ -52,12 +52,12 @@ public interface OrderMapper {
     @Select("select * from sky_take_out.orders where id = #{id}")
     Orders getById(Long id);
 
+
     /**
-     * 取消订单
-     *
+     * 修改订单支付状态
      * @param id
-     * @param status
+     * @param cancelled
      */
-    @Update("update sky_take_out.orders set status = #{status} where id = #{id};")
-    void cancel(Long id, Integer status);
+    @Update("update sky_take_out.orders set pay_status = #{cancelled} where id = #{id};")
+    void setPayStatus(Long id, Integer cancelled);
 }
