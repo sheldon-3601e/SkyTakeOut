@@ -60,4 +60,11 @@ public interface OrderMapper {
      */
     @Update("update sky_take_out.orders set pay_status = #{cancelled} where id = #{id};")
     void setPayStatus(Long id, Integer cancelled);
+
+    /**
+     * 管理端查询订单
+     * @param ordersPageQueryDTO
+     * @return
+     */
+    Page<Orders> pageQueryByAdmin(OrdersPageQueryDTO ordersPageQueryDTO);
 }
