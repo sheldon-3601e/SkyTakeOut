@@ -386,5 +386,24 @@ public class OrderServiceImpl implements OrderService {
 
         return orderStatisticsVO;
     }
+
+    @Override
+    public OrderVO details(Long id) {
+        // 查询订单
+        Orders order = orderMapper.getById(id);
+        // 判断订单是否存在
+        if (order == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+
+        // 查询订单的菜品信息
+        List<OrderDetail> orderDetailList = orderDetailMapper.getByOrderId(order.getId());
+
+        // 封装对象
+        OrderVO orderVO = new OrderVO();
+        BeanUtils.copyProperties(order, orderVO);
+        orderVO.setOrderDetailList(orderDetailList);
+        return orderVO;
+    }
 }
 

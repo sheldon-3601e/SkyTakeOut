@@ -81,4 +81,10 @@ public interface OrderService {
      */
     OrderStatisticsVO statistics();
 
+    /**
+     * 查询订单详情
+     * @param id
+     * @return
+     */
+    OrderVO details(Long id);
 }
