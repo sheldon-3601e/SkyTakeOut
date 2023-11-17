@@ -22,3 +22,9 @@ sky:
   wechat:
     appid: wx86df833f15df3e80
     secret: 99bde009c965506141b58a4f7288313b
+
+  shop:
+    address: \xe58c97\xe4baac\xe5b882\xe6b5b7\xe6b780\xe58cba\xe4b88a\xe59cb0\xe58d81\xe8a197\x31\x30\xe58fb7
+  baidu:
+    ak: bUlIGfyEdrIgrimNxQWfaLSIY59KfnHf
+
