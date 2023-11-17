@@ -83,5 +83,14 @@ public class OrderController {
         return Result.success();
     }
 
+    @PostMapping("/repetition/{id}")
+    @ApiOperation("再来一单")
+    public Result repetitionById(@PathVariable Long id) {
+        log.info("再来一单");
+
+        orderService.repetitionById(id);
+        return Result.success();
+    }
+
 
 }

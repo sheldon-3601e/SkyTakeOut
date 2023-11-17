@@ -16,10 +16,12 @@ import com.sky.mapper.*;
 import com.sky.result.PageResult;
 import com.sky.service.OrderService;
 import com.sky.utils.WeChatPayUtil;
+import com.sky.vo.DishVO;
 import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
@@ -52,6 +54,8 @@ public class OrderServiceImpl implements OrderService {
     private UserMapper userMapper;
     @Autowired
     private DishMapper dishMapper;
+    @Autowired
+    private SetmealMapper setmealMapper;
     @Autowired
     private WeChatPayUtil weChatPayUtil;
 
@@ -262,4 +266,48 @@ public class OrderServiceImpl implements OrderService {
         order.setCancelTime(LocalDateTime.now());
         orderMapper.update(order);
     }
+
+    @Override
+    public void repetitionById(Long id) {
+        // 获取完成的订单信息
+        Orders oldOrder = orderMapper.getById(id);
+        if (oldOrder == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+
+        // 获取对应的口味信息
+        List<OrderDetail> orderDetailList = orderDetailMapper.getByOrderId(id);
+        ArrayList<ShoppingCart> shoppingCartArrayList = new ArrayList<>();
+
+        for (OrderDetail orderDetail : orderDetailList) {
+            Long dishId = orderDetail.getDishId();
+            Long setmealId = orderDetail.getSetmealId();
+            ShoppingCart shoppingCart = new ShoppingCart();
+            Long userId = BaseContext.getCurrentId();
+            shoppingCart.setUserId(userId);
+            if (dishId != null) {
+                // 菜品
+                DishVO dish = dishMapper.getDishById(dishId);
+                shoppingCart.setName(dish.getName());
+                shoppingCart.setImage(dish.getImage());
+                shoppingCart.setAmount(dish.getPrice());
+
+            } else {
+                // 套餐
+                Setmeal setmeal = setmealMapper.getSetmealById(setmealId);
+                shoppingCart.setName(setmeal.getName());
+                shoppingCart.setImage(setmeal.getImage());
+                shoppingCart.setAmount(setmeal.getPrice());
+
+            }
+            shoppingCart.setNumber(orderDetail.getNumber());
+            shoppingCart.setCreateTime(LocalDateTime.now());
+            shoppingCartArrayList.add(shoppingCart);
+        }
+
+        shoppingCartMapper.addBatch(shoppingCartArrayList);
+    }
+
+
 }
+

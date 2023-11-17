@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,7 +39,7 @@ public interface ShoppingCartMapper {
      * 插入购物车
      * @param shoppingCart
      */
-    @Insert("insert into shopping_cart" +
+    @Insert("insert into sky_take_out.shopping_cart" +
             "(name, user_id, dish_id, setmeal_id, dish_flavor, number, amount, image, create_time)" +
             "values " +
             "(#{name}, #{userId}, #{dishId}, #{setmealId}, #{dishFlavor}, #{number}, #{amount}, #{image}, #{createTime})")
@@ -48,4 +49,10 @@ public interface ShoppingCartMapper {
     void clean(ShoppingCart shoppingCart);
 
     void sub(ShoppingCart shoppingCart);
+
+    /**
+     * 批量插入
+     * @param shoppingCartArrayList
+     */
+    void addBatch(ArrayList<ShoppingCart> shoppingCartArrayList);
 }
