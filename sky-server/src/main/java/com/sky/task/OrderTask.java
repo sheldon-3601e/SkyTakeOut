@@ -18,7 +18,7 @@ import java.util.List;
  * @Description TODO
  */
 @Component
-@Slf4j
+//@Slf4j
 public class OrderTask {
 
     @Autowired
@@ -29,7 +29,7 @@ public class OrderTask {
      */
     @Scheduled(cron = "0 * * * * *")
     public void processTimeoutOrder() {
-        log.info("定时处理超时订单：{}", LocalDateTime.now());
+        //log.info("定时处理超时订单：{}", LocalDateTime.now());
 
         LocalDateTime time = LocalDateTime.now().plusMinutes(-15);
 
@@ -53,7 +53,7 @@ public class OrderTask {
      */
     @Scheduled(cron = "0 0 1 * * *")
     public void processDeliveryOrder() {
-        log.info("定时一直派送的订单：{}", LocalDateTime.now());
+        //log.info("定时一直派送的订单：{}", LocalDateTime.now());
 
         LocalDateTime time = LocalDateTime.now().plusHours(-1);
 
