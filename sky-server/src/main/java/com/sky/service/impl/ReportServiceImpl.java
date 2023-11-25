@@ -1,10 +1,14 @@
 package com.sky.service.impl;
 
+import com.sky.dto.GoodsSalesDTO;
+import com.sky.entity.OrderDetail;
 import com.sky.entity.Orders;
+import com.sky.mapper.OrderDetailMapper;
 import com.sky.mapper.OrderMapper;
 import com.sky.mapper.UserMapper;
 import com.sky.service.ReportService;
 import com.sky.vo.OrderReportVO;
+import com.sky.vo.SalesTop10ReportVO;
 import com.sky.vo.TurnoverReportVO;
 import com.sky.vo.UserReportVO;
 import com.sun.java.swing.plaf.windows.WindowsTextAreaUI;
@@ -17,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName ReportServiceImpl
@@ -49,12 +54,12 @@ public class ReportServiceImpl implements ReportService {
         }
 
         // 遍历时间区间的营业额
-        dateList.forEach((LocalDate date) ->{
+        dateList.forEach((LocalDate date) -> {
             LocalDateTime beginTime = LocalDateTime.of(date, LocalTime.MIN);
             LocalDateTime endTime = LocalDateTime.of(date, LocalTime.MAX);
             Map map = new HashMap<>();
-            map.put("begin",beginTime);
-            map.put("end",endTime);
+            map.put("begin", beginTime);
+            map.put("end", endTime);
             map.put("status", Orders.COMPLETED);
             Double turnover = orderMapper.sumByMap(map);
             turnover = turnover == null ? 0.0 : turnover;
@@ -87,9 +92,9 @@ public class ReportServiceImpl implements ReportService {
             LocalDateTime beginTime = LocalDateTime.of(date, LocalTime.MIN);
             LocalDateTime endTime = LocalDateTime.of(date, LocalTime.MAX);
 
-            map.put("end",endTime);
+            map.put("end", endTime);
             Integer totalUser = userMapper.countByMap(map);
-            map.put("begin",beginTime);
+            map.put("begin", beginTime);
             Integer newUser = userMapper.countByMap(map);
 
             totalUserList.add(totalUser);
@@ -156,4 +161,28 @@ public class ReportServiceImpl implements ReportService {
                 .orderCompletionRate(orderCompletionRate)
                 .build();
     }
+
+    @Override
+    public SalesTop10ReportVO getTop10(LocalDate begin, LocalDate end) {
+
+        LocalDateTime beginTime = LocalDateTime.of(begin, LocalTime.MIN);
+        LocalDateTime endTime = LocalDateTime.of(end, LocalTime.MAX);
+
+        // 查询销量排名
+        Map map = new HashMap<>();
+        map.put("begin", beginTime);
+        map.put("end", endTime);
+        map.put("status", Orders.COMPLETED);
+        List<GoodsSalesDTO> goodSaleList = orderMapper.getTop10(map);
+        List<String> nameList = goodSaleList.stream().map(GoodsSalesDTO::getName).collect(Collectors.toList());
+        List<Integer> numberList = goodSaleList.stream().map(GoodsSalesDTO::getNumber).collect(Collectors.toList());
+
+        // 封装数据
+        return SalesTop10ReportVO.builder()
+                .nameList(StringUtils.join(nameList,","))
+                .numberList(StringUtils.join(numberList,","))
+                .build();
+    }
+
 }
+

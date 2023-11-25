@@ -117,6 +117,21 @@
             <if test="status != null">and status = #{status}</if>
         </where>
     </select>
+    <select id="getTop10" resultType="com.sky.dto.GoodsSalesDTO">
+        SELECT od.`name`, SUM(od.number) as number
+        FROM sky_take_out.order_detail as od,sky_take_out.orders as o
+        WHERE od.order_id = o.id
+        AND o.`status` = #{status}
+        <if test="begin != null">
+            and order_time &gt; #{begin}
+        </if>
+        <if test="end != null">
+            AND o.order_time &lt; #{end}
+        </if>
+        GROUP BY od.`name`
+        ORDER BY number DESC
+        LIMIT 0,10;
+    </select>
 
 
 </mapper>
